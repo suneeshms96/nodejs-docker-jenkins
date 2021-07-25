@@ -26,11 +26,11 @@
         state: restarted
         enabled: true
 
-        #    - name: clone repo
-        #git:
-        #repo: https://github.com/suneeshms96/nodejs-docker-jenkins.git
-        #dest: /var/www/new
-        #force: true
+    - name: clone repo
+      git:
+        repo: https://github.com/suneeshms96/nodejs-docker-jenkins.git
+        dest: /home/ec2-user/
+        force: true
 
     - name: Log into DockerHub
       docker_login:
@@ -41,7 +41,7 @@
     - name: Build image from dockerfile
       docker_image:
         name: suneeshms96/node-web
-        path: .
+        path: /home/ec2-user/
         push: true
 
 - name: docker ansible
