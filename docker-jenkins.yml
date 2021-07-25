@@ -1,0 +1,81 @@
+---
+
+- name: docker ansible
+  hosts: docker_build
+  become: true
+  gather_facts: no
+  tasks:
+
+    - name: Install Docker
+      shell: sudo yum install docker -y
+      args:
+        warn: no
+
+    - name: Install pip
+      yum:
+        name: git, python-pip
+        state: present
+
+    - name: Install Docker-python
+      pip:
+        name: docker-py
+
+    - name: Restart Docker
+      service:
+        name: docker
+        state: restarted
+        enabled: true
+
+    - name: clone repo
+      git:
+        repo: https://github.com/suneeshms96/nodejs-docker-jenkins.git
+        dest: /var/www/new
+        force: true
+
+    - name: Log into DockerHub
+      docker_login:
+        username: suneeshms96
+        password: Omnamasivaya@123#
+
+
+    - name: Build image from dockerfile
+      docker_image:
+        name: suneeshms96/node-web
+        path: /var/www/new
+        push: true
+
+- name: docker ansible
+  hosts: docker_test
+  become: true
+  gather_facts: no
+  tasks:
+
+    - name: Install Docker
+      shell: 'amazon-linux-extras install docker -y'
+      args:
+        warn: no
+
+    - name: "Deployment - Additional package Installation"
+      yum:
+        name: python-pip
+        state: present
+
+    - name: Install Docker-python
+      pip:
+        name: docker-py
+
+    - name: Restart Docker
+      service:
+        name: docker
+        state: restarted
+        enabled: true
+
+    - name: Creating Docker container
+      docker_container:
+        name: new-app
+        image: suneeshms96/node-web
+        pull: yes
+        state: started
+        recreate: yes
+        published_ports:
+          - "9000:9000"

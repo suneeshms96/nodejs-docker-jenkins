@@ -1,0 +1,6 @@
+[docker_build]
+3.17.133.86 ansible_user=ec2-user ansible_port=22
+
+[docker_test]
+18.216.134.20 ansible_user=ec2-user ansible_port=22
+
