@@ -29,7 +29,7 @@
     - name: clone repo
       git:
         repo: https://github.com/suneeshms96/nodejs-docker-jenkins.git
-        dest: /home/ec2-user/
+        dest: /home/ec2-user/new
         force: true
 
     - name: Log into DockerHub
@@ -41,7 +41,7 @@
     - name: Build image from dockerfile
       docker_image:
         name: suneeshms96/node-web
-        path: /home/ec2-user/
+        path: /home/ec2-user/new
         push: true
 
 - name: docker ansible
