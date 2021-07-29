@@ -44,6 +44,11 @@
         path: /home/ec2-user/new
         push: true
 
+    - name: Removing Docker Image
+      docker_image:
+        state: absent
+        name: suneeshms96/node-web
+
 - name: docker ansible
   hosts: docker_test
   become: true
